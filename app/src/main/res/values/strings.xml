@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Firetell</string>
+    <string name="log_in">Log in</string>
+    <string name="log_in_welcome">Welcome back</string>
+    <string name="email_hint">Enter e-mail...</string>
+    <string name="password_hint">Enter password...</string>
 </resources>
