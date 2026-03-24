@@ -3,6 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="gray">#AAAAAAAA</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+
 
     <color name="background">#413b39</color>
     <color name="panelBackground">#3b2f2b</color>
