@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/panelBackground">
+
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:background="none"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_menu_icon"
+                android:layout_marginRight="20dp"
+                android:id="@+id/menu_btn"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="none"
+                android:textSize="20sp"
+                android:text="Chat name"/>
+        </Toolbar>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/messages">
+
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="Type your message..."
+                android:id="@+id/message_input"/>
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_send_icon"
+                android:background="@color/panelBackground"
+                android:id="@+id/send_btn"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:id="@+id/chat_menu"
+        app:menu="@menu/chat_menu"/>
+</androidx.drawerlayout.widget.DrawerLayout>
