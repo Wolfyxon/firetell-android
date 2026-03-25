@@ -19,7 +19,6 @@ public class LoginActivity extends AppCompatActivity {
 
         loginBtn.setOnClickListener(l -> {
             Util.changeActivity(this, ChatActivity.class);
-            finish();
         });
     }
 }
