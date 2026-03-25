@@ -24,5 +24,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Util.changeActivity(this, LoginActivity.class);
+        finish();
     }
 }
