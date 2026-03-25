@@ -8,6 +8,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.wolfyxon.firetell.android.lib.Util;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +25,13 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        Util.changeActivity(this, LoginActivity.class);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+
+        if(user != null) {
+            Util.changeActivity(this, ChatActivity.class);
+        } else {
+            Util.changeActivity(this, LoginActivity.class);
+        }
     }
 }

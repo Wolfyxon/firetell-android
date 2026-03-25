@@ -5,7 +5,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
 
-
+    <color name="error">#FF6969</color>
     <color name="background">#413b39</color>
     <color name="panelBackground">#3b2f2b</color>
     <color name="accent">#dd5e2c</color>
