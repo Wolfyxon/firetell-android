@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "331621392091",
+    "firebase_url": "https://bighomework-4cd24-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "bighomework-4cd24",
+    "storage_bucket": "bighomework-4cd24.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331621392091:android:469aa2e4f7b7244d73b6fe",
+        "android_client_info": {
+          "package_name": "com.wolfyxon.firetell.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANbWLweDQt9eMFp8nsiDVNutF89RnFLQw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
