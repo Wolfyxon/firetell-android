@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wolfyxon.firetell.android.lib.Chat;
 import com.wolfyxon.firetell.android.lib.HttpApi;
+import com.wolfyxon.firetell.android.lib.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,7 +90,13 @@ public class ChatActivity extends AppCompatActivity {
 
         };
 
-        HttpApi.authRequest(httpQueue, auth, url, Request.Method.POST, body, res -> {}, err -> {});
+        HttpApi.authRequest(httpQueue, auth, url, Request.Method.POST, body,
+                res -> {
+
+                },
+                err -> {
+                    Util.showToast(this, err.getMessage());
+                });
     }
 
     void initDb() {
