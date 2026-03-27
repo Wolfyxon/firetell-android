@@ -2,9 +2,11 @@ package com.wolfyxon.firetell.android;
 
 import android.net.http.HttpEngine;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -40,6 +42,7 @@ import java.util.Set;
 
 public class ChatActivity extends AppCompatActivity {
     DrawerLayout main;
+    ScrollView messageScroll;
     LinearLayout messageList;
     NavigationView sideMenu;
     EditText messageInp;
@@ -60,6 +63,7 @@ public class ChatActivity extends AppCompatActivity {
         api = new HttpApi(Volley.newRequestQueue(this));
 
         main = findViewById(R.id.main);
+        messageScroll = findViewById(R.id.message_scroll);
         messageList = findViewById(R.id.messages);
         sideMenu = findViewById(R.id.chat_menu);
         messageInp = findViewById(R.id.message_input);
@@ -115,6 +119,10 @@ public class ChatActivity extends AppCompatActivity {
         view.fetchUser(api);
 
         messageList.addView(view);
+
+        messageScroll.post(() -> {
+            messageScroll.fullScroll(View.FOCUS_DOWN);
+        });
     }
 
     void loadChat(String id) {
