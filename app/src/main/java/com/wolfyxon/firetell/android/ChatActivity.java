@@ -115,7 +115,9 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void addMessage(Message msg) {
-        MessageView view = new MessageView(this, msg);
+        auth = FirebaseAuth.getInstance();
+
+        MessageView view = new MessageView(this, msg, auth.getUid() != null && auth.getUid().equals(msg.authorUid));
         view.fetchUser(api);
 
         messageList.addView(view);

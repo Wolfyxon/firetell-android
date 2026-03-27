@@ -35,10 +35,14 @@ public class MessageView extends LinearLayout {
         init();
     }
 
-    public MessageView(Context ctx, Message message) {
+    public MessageView(Context ctx, Message message, boolean isOwn) {
         super(ctx);
         this.message = message;
         init();
+
+        if(isOwn) {
+            setAsOwn();
+        }
     }
 
     void init() {
@@ -48,6 +52,10 @@ public class MessageView extends LinearLayout {
         textLabel = findViewById(R.id.text_lbl);
 
         updateMessage();
+    }
+
+    void setAsOwn() {
+        authorLabel.setTextColor(getResources().getColor(R.color.accentText));
     }
 
     void updateMessage() {
