@@ -12,9 +12,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +38,7 @@ public class ChatActivity extends AppCompatActivity {
     NavigationView sideMenu;
     EditText messageInp;
     ImageButton sendBtn;
+    RequestQueue httpQueue;
     DatabaseReference db;
     FirebaseAuth auth;
     Chat currentChat;
@@ -46,6 +49,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         initDb();
+        httpQueue = Volley.newRequestQueue(this);
 
         main = findViewById(R.id.main);
         sideMenu = findViewById(R.id.chat_menu);
@@ -108,6 +112,8 @@ public class ChatActivity extends AppCompatActivity {
                 return headers;
             }
         };
+
+        httpQueue.add(req);
     }
 
     void initDb() {
