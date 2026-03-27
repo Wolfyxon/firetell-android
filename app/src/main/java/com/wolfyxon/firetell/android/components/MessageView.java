@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wolfyxon.firetell.android.R;
+import com.wolfyxon.firetell.android.lib.HttpApi;
 import com.wolfyxon.firetell.android.lib.Message;
 
 public class MessageView extends LinearLayout {
@@ -56,5 +57,13 @@ public class MessageView extends LinearLayout {
 
         authorLabel.setText(message.authorUid); // TODO: Fetch username
         textLabel.setText(message.content);
+    }
+
+    public void fetchUser(HttpApi api) {
+        api.fetchUser(message.authorUid, user -> {
+            if(user.displayName != null) {
+                authorLabel.setText(user.displayName);
+            }
+        });
     }
 }

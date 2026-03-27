@@ -44,7 +44,7 @@ public class ChatActivity extends AppCompatActivity {
     NavigationView sideMenu;
     EditText messageInp;
     ImageButton sendBtn;
-    RequestQueue httpQueue;
+    HttpApi api;
     DatabaseReference db;
     FirebaseAuth auth;
     Chat currentChat;
@@ -57,7 +57,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         initDb();
-        httpQueue = Volley.newRequestQueue(this);
+        api = new HttpApi(Volley.newRequestQueue(this));
 
         main = findViewById(R.id.main);
         messageList = findViewById(R.id.messages);
@@ -97,7 +97,7 @@ public class ChatActivity extends AppCompatActivity {
 
         };
 
-        HttpApi.authRequest(httpQueue, auth, url, Request.Method.POST, body,
+        api.authRequest(url, Request.Method.POST, body,
                 res -> {
 
                 },
@@ -111,7 +111,10 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void addMessage(Message msg) {
-        messageList.addView(new MessageView(this, msg));
+        MessageView view = new MessageView(this, msg);
+        view.fetchUser(api);
+
+        messageList.addView(view);
     }
 
     void loadChat(String id) {
