@@ -38,6 +38,11 @@ public class LoginActivity extends AppCompatActivity {
 
     void logIn() {
         errorLbl.setText("");
+
+        if(!preCheckCredentials()) {
+            return;
+        }
+
         loginBtn.setEnabled(false);
 
         String email = emailInput.getText().toString();
@@ -47,7 +52,33 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this::processLoginResult);
     }
 
+    boolean preCheckCredentials() {
+        boolean emailEmpty = emailInput.getText().length() == 0;
+        boolean passEmpty = passwordInput.getText().length() == 0;
+
+        // TODO: String values
+
+        if(emailEmpty && passEmpty) {
+            errorLbl.setText("Please enter your e-mail and password");
+            return false;
+        }
+
+        if(emailEmpty) {
+            errorLbl.setText("E-mail missing");
+            return false;
+        }
+
+        if(passEmpty) {
+            errorLbl.setText("Password missing");
+            return false;
+        }
+
+        return true;
+    }
+
     void processLoginResult(Task<AuthResult> result) {
+        loginBtn.setEnabled(true);
+
         if(result.isSuccessful()) {
             Util.changeActivity(this, ChatActivity.class);
         } else {
