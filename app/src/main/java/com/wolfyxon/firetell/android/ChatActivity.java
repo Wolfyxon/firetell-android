@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wolfyxon.firetell.android.lib.Chat;
+import com.wolfyxon.firetell.android.lib.HttpApi;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,7 +80,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void sendMessage(String content) {
-        String url = "/api/v1/chats/" + currentChat.id + "/messages";
+        String url = "chats/" + currentChat.id + "/messages";
 
         JSONObject body = new JSONObject();
         try {
@@ -88,32 +89,7 @@ public class ChatActivity extends AppCompatActivity {
 
         };
 
-        JsonObjectRequest req = new JsonObjectRequest(
-                Request.Method.POST,
-                url,
-                body,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }
-        ) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Authorization", auth.getAccessToken(false).toString());
-                return headers;
-            }
-        };
-
-        httpQueue.add(req);
+        HttpApi.authRequest(httpQueue, auth, url, Request.Method.POST, body, res -> {}, err -> {});
     }
 
     void initDb() {
