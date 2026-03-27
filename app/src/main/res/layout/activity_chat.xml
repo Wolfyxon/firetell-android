@@ -75,5 +75,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:id="@+id/chat_menu"
+        app:itemTextColor="@color/white"
         app:menu="@menu/chat_menu"/>
 </androidx.drawerlayout.widget.DrawerLayout>
