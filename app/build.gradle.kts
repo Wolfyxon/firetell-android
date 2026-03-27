@@ -44,6 +44,7 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 
     // version catalog doesn't work lol
+    implementation("com.android.volley:volley:1.2.1")
     implementation("com.google.firebase:firebase-auth:24.0.1")
     implementation("com.google.firebase:firebase-database:22.0.1")
 }
