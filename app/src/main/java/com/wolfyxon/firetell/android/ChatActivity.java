@@ -4,6 +4,7 @@ import android.net.http.HttpEngine;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -24,8 +25,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.wolfyxon.firetell.android.components.MessageView;
 import com.wolfyxon.firetell.android.lib.Chat;
 import com.wolfyxon.firetell.android.lib.HttpApi;
+import com.wolfyxon.firetell.android.lib.Message;
 import com.wolfyxon.firetell.android.lib.Util;
 
 import org.json.JSONException;
@@ -37,6 +40,7 @@ import java.util.Set;
 
 public class ChatActivity extends AppCompatActivity {
     DrawerLayout main;
+    LinearLayout messageList;
     NavigationView sideMenu;
     EditText messageInp;
     ImageButton sendBtn;
@@ -44,6 +48,8 @@ public class ChatActivity extends AppCompatActivity {
     DatabaseReference db;
     FirebaseAuth auth;
     Chat currentChat;
+    DatabaseReference currentChatRef;
+    ValueEventListener currentChatListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,7 @@ public class ChatActivity extends AppCompatActivity {
         httpQueue = Volley.newRequestQueue(this);
 
         main = findViewById(R.id.main);
+        messageList = findViewById(R.id.messages);
         sideMenu = findViewById(R.id.chat_menu);
         messageInp = findViewById(R.id.message_input);
         sendBtn = findViewById(R.id.send_btn);
@@ -99,6 +106,39 @@ public class ChatActivity extends AppCompatActivity {
                 });
     }
 
+    void clearMessages() {
+        messageList.removeAllViews();
+    }
+
+    void addMessage(Message msg) {
+        messageList.addView(new MessageView(this, msg));
+    }
+
+    void loadChat(String id) {
+        if(currentChatRef != null && currentChatListener != null) {
+            currentChatRef.removeEventListener(currentChatListener);
+        }
+
+        currentChatRef = db.child("/messages/" + id).orderByChild("timestamp").limitToLast(64).getRef();
+        currentChatListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                clearMessages();
+
+                for(DataSnapshot msgSnapshot : snapshot.getChildren() ) {
+                    addMessage(new Message(msgSnapshot));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        currentChatRef.addValueEventListener(currentChatListener);
+    }
+
     void initDb() {
         db = FirebaseDatabase.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
@@ -125,6 +165,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 for(String id : ids) {
                     currentChat = new Chat(id, "nope"); // testing!
+                    loadChat(id);
                     sideMenu.getMenu().add(id);
                 }
             }

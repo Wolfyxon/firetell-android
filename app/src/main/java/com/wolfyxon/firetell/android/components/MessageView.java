@@ -55,6 +55,6 @@ public class MessageView extends LinearLayout {
         }
 
         authorLabel.setText(message.authorUid); // TODO: Fetch username
-        textLabel.setText(message.text);
+        textLabel.setText(message.content);
     }
 }
