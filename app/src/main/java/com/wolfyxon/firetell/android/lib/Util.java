@@ -1,7 +1,9 @@
 package com.wolfyxon.firetell.android.lib;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.Toast;
 
@@ -23,5 +25,17 @@ public class Util {
         t.setDuration(Toast.LENGTH_LONG);
         t.setText(message);
         t.show();
+    }
+
+    public static void showAlert(Context ctx, String text) {
+        new AlertDialog.Builder(ctx)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setMessage(text)
+                .show();
     }
 }

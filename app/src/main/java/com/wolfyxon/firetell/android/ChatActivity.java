@@ -150,7 +150,7 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Util.showAlert(getApplicationContext(), "Failed to load messages:\n" + error.getMessage());
             }
         };
 
@@ -190,7 +190,7 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Util.showAlert(getApplicationContext(), "Failed to load chats:\n" + error.getMessage());
             }
         });
     }
