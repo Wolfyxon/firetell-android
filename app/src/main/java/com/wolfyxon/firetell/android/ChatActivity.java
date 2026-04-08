@@ -92,6 +92,11 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void sendMessage(String content) {
+        if(currentChat == null) {
+            Util.showToast(this, "No chat selected");
+            return;
+        }
+
         String url = "chats/" + currentChat.id + "/messages";
 
         JSONObject body = new JSONObject();
