@@ -9,11 +9,18 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.wolfyxon.firetell.android.lib.HttpApi;
 import com.wolfyxon.firetell.android.lib.Util;
 
 public class MainActivity extends AppCompatActivity {
+
+    void goToLogin() {
+        Util.changeActivity(this, LoginActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +37,40 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
 
-        if(user != null) {
-            Util.changeActivity(this, ChatActivity.class);
-        } else {
-            Util.changeActivity(this, LoginActivity.class);
+        HttpApi api = new HttpApi(Volley.newRequestQueue(this));
+
+        if(user == null) {
+            goToLogin();
+            return;
         }
+
+        api.authRequest("auth", Request.Method.GET,null,
+                json -> {
+                    Util.changeActivity(this, ChatActivity.class);
+                },
+                err -> {
+                    if(err.networkResponse == null) {
+                        Util.showAlert(this, "Unable to connect. Please check your internet connection.");
+                        return;
+                    }
+
+                    int code = err.networkResponse.statusCode;
+
+                    if(code == 500) {
+                        Util.showAlert(this, "Server has a skill issue (code 500)");
+                        return;
+                    }
+
+                    if(code == 401) {
+                        Util.showToast(this, "Your session expired, please log back in");
+                        goToLogin();
+                        return;
+                    }
+
+                    Util.showAlert(this, "Unknown error. Response: " + code);
+                }
+        );
+
+
     }
 }
