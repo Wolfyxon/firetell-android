@@ -15,4 +15,8 @@
         android:id="@+id/nav_logout"
         android:title="Logout" />
 
+    <group
+        android:id="@+id/chats">
+
+    </group>
 </menu>
