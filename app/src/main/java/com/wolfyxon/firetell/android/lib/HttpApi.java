@@ -47,19 +47,21 @@ public class HttpApi {
         FirebaseAuth auth = getAuth();
 
         assert auth.getCurrentUser() != null;
-        String token = auth.getCurrentUser().getIdToken(false).getResult().getToken();
+        auth.getCurrentUser().getIdToken(false).addOnSuccessListener(res -> {
+            String token = res.getToken();
 
-        JsonObjectRequest req = new JsonObjectRequest(method, URL + endpoint, body, successListener, errorListener) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Authorization", token);
+            JsonObjectRequest req = new JsonObjectRequest(method, URL + endpoint, body, successListener, errorListener) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", token);
 
-                return headers;
-            }
-        };
+                    return headers;
+                }
+            };
 
-        queue.add(req);
+            queue.add(req);
+        });
     }
 
     public void fetchUser(String uid, GenericListener<UserData> listener) {

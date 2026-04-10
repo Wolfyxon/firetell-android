@@ -57,10 +57,12 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        initDb();
         gateway = new Gateway(this);
 
+        initDb();
+
         main = findViewById(R.id.main);
+        chatNameLbl = findViewById(R.id.chat_name);
         messageScroll = findViewById(R.id.message_scroll);
         messageList = findViewById(R.id.messages);
         sideMenu = findViewById(R.id.chat_menu);

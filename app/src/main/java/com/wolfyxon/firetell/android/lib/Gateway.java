@@ -21,10 +21,11 @@ public class Gateway extends HttpApi {
 
     public Gateway(RequestQueue queue) {
         super(queue);
+        chatCache = new HashMap<>();
     }
 
     public Gateway(Context ctx) {
-        super(Volley.newRequestQueue(ctx));
+        this(Volley.newRequestQueue(ctx));
     }
 
     public DatabaseReference getDbRef() {
