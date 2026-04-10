@@ -89,8 +89,12 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         getSideMenuHeader().findViewById(R.id.logout_btn).setOnClickListener(l -> {
-            auth.signOut();
-            Util.changeActivity(this, LoginActivity.class);
+           Util.showConfirm(this, "Would you like to log out?", res -> {
+               if(res) {
+                   auth.signOut();
+                   Util.changeActivity(this, LoginActivity.class);
+               }
+           });
         });
 
         OnBackPressedCallback backCallback = new OnBackPressedCallback(true) {

@@ -38,4 +38,20 @@ public class Util {
                 .setMessage(text)
                 .show();
     }
+
+    public static void showConfirm(Context ctx, String text, HttpApi.GenericListener<Boolean> callback) {
+        new AlertDialog.Builder(ctx)
+                .setPositiveButton("Yes", (dialog, i) -> {
+                    callback.onData(true);
+                    dialog.dismiss();
+                })
+                .setNegativeButton("No", (dialog, i) -> {
+                    dialog.cancel();
+                })
+                .setOnCancelListener(l -> {
+                    callback.onData(false);
+                })
+                .setMessage(text)
+                .show();
+    }
 }
