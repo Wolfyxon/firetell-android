@@ -14,10 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,12 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.wolfyxon.firetell.android.components.MessageView;
 import com.wolfyxon.firetell.android.lib.Chat;
 import com.wolfyxon.firetell.android.lib.Gateway;
-import com.wolfyxon.firetell.android.lib.HttpApi;
 import com.wolfyxon.firetell.android.lib.Message;
 import com.wolfyxon.firetell.android.lib.Util;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -60,8 +55,22 @@ public class ChatActivity extends AppCompatActivity {
 
         gateway = new Gateway(this);
 
+        loadUi();
         initDb();
+        initSideMenu();
 
+        FirebaseUser user = auth.getCurrentUser();
+        String displayName = user.getDisplayName();
+
+        TextView usernameLbl = sideMenu.getHeaderView(0).findViewById(R.id.username);
+        usernameLbl.setText(displayName != null ? displayName : user.getUid());
+
+        sendBtn.setOnClickListener(l -> {
+            sendMessage();
+        });
+    }
+
+    void loadUi() {
         main = findViewById(R.id.main);
         chatNameLbl = findViewById(R.id.chat_name);
         messageScroll = findViewById(R.id.message_scroll);
@@ -69,12 +78,6 @@ public class ChatActivity extends AppCompatActivity {
         sideMenu = findViewById(R.id.chat_menu);
         messageInp = findViewById(R.id.message_input);
         sendBtn = findViewById(R.id.send_btn);
-
-        initSideMenu();
-
-        sendBtn.setOnClickListener(l -> {
-            sendMessage();
-        });
     }
 
     void initSideMenu() {
@@ -223,11 +226,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void addChat(Chat chat) {
-        String name = chat.name;
-
-        if(name == null) {
-            name = "Unknown chat";
-        }
+        String name = chat.name != null ? chat.name : "Unknown chat";
 
         getChatListMenu().add(name).setOnMenuItemClickListener(l -> {
             selectChat(chat.id);

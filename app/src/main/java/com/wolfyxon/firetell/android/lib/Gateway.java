@@ -14,7 +14,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 public class Gateway extends HttpApi {
     HashMap<String, Chat> chatCache;
