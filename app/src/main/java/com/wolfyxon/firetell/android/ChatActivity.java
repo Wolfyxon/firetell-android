@@ -130,7 +130,13 @@ public class ChatActivity extends AppCompatActivity {
 
         gateway.fetchChat(id,
                 chat -> {
-                    chatNameLbl.setText(chat.name);
+                    String name = chat.name;
+
+                    if(name == null) {
+                        name = "Unknown chat";
+                    }
+
+                    chatNameLbl.setText(name);
                 },
                 err -> {
                     Util.showToast(this, "Failed to load chat: " + err.getMessage());
@@ -171,6 +177,7 @@ public class ChatActivity extends AppCompatActivity {
         gateway.createChatListListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                getChatListMenu().clear();
                 HashMap<String, Boolean> idMap = (HashMap<String, Boolean>) snapshot.getValue();
 
                 if(idMap == null) {
@@ -181,8 +188,6 @@ public class ChatActivity extends AppCompatActivity {
                 Set<String> ids = idMap.keySet();
 
                 for(String id : ids) {
-                    currentChat = new Chat(id, "nope"); // testing!
-
                     gateway.fetchChat(id,
                         chat -> {
                             addChat(chat);
@@ -209,7 +214,13 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void addChat(Chat chat) {
-        getChatListMenu().add(chat.name).setOnMenuItemClickListener(l -> {
+        String name = chat.name;
+
+        if(name == null) {
+            name = "Unknown chat";
+        }
+
+        getChatListMenu().add(name).setOnMenuItemClickListener(l -> {
             selectChat(chat.id);
             return true;
         });
