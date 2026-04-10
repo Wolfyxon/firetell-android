@@ -137,6 +137,7 @@ public class ChatActivity extends AppCompatActivity {
                     }
 
                     chatNameLbl.setText(name);
+                    currentChat = chat;
                 },
                 err -> {
                     Util.showToast(this, "Failed to load chat: " + err.getMessage());
