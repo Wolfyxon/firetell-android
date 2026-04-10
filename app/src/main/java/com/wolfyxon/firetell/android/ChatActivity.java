@@ -1,6 +1,7 @@
 package com.wolfyxon.firetell.android;
 
 import android.os.Bundle;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -203,8 +204,15 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    SubMenu getChatListMenu() {
+        return sideMenu.getMenu().findItem(R.id.chats).getSubMenu();
+    }
+
     void addChat(Chat chat) {
-        sideMenu.getMenu().findItem(R.id.chats).getSubMenu().add(chat.name);
+        getChatListMenu().add(chat.name).setOnMenuItemClickListener(l -> {
+            selectChat(chat.id);
+            return true;
+        });
     }
 
     void openSideMenu() {
