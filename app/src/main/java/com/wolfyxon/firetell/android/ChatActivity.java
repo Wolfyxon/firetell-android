@@ -132,7 +132,7 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    void loadChat(String id) {
+    void selectChat(String id) {
         if(currentChatRef != null && currentChatListener != null) {
             currentChatRef.removeEventListener(currentChatListener);
         }
@@ -183,7 +183,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 for(String id : ids) {
                     currentChat = new Chat(id, "nope"); // testing!
-                    loadChat(id);
+                    selectChat(id);
                     sideMenu.getMenu().add(id);
                 }
             }
