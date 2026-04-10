@@ -73,7 +73,7 @@ public class ChatActivity extends AppCompatActivity {
         initSideMenu();
 
         sendBtn.setOnClickListener(l -> {
-            sendMessage(messageInp.getText().toString());
+            sendMessage();
         });
     }
 
@@ -92,9 +92,15 @@ public class ChatActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, backCallback);
     }
 
-    void sendMessage(String content) {
+    void sendMessage() {
         if(currentChat == null) {
             Util.showToast(this, "No chat selected");
+            return;
+        }
+
+        String content = messageInp.getText().toString();
+
+        if(content.isEmpty()) {
             return;
         }
 
@@ -104,6 +110,8 @@ public class ChatActivity extends AppCompatActivity {
                     Util.showToast(this, err.getMessage());
                 }
         );
+
+        messageInp.setText("");
     }
 
     void clearMessages() {
