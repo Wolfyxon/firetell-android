@@ -1,6 +1,5 @@
 package com.wolfyxon.firetell.android;
 
-import android.net.http.HttpEngine;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -13,12 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wolfyxon.firetell.android.components.MessageView;
 import com.wolfyxon.firetell.android.lib.Chat;
+import com.wolfyxon.firetell.android.lib.Gateway;
 import com.wolfyxon.firetell.android.lib.HttpApi;
 import com.wolfyxon.firetell.android.lib.Message;
 import com.wolfyxon.firetell.android.lib.Util;
@@ -37,7 +32,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 public class ChatActivity extends AppCompatActivity {
@@ -47,7 +41,7 @@ public class ChatActivity extends AppCompatActivity {
     NavigationView sideMenu;
     EditText messageInp;
     ImageButton sendBtn;
-    HttpApi api;
+    Gateway gateway;
     DatabaseReference db;
     FirebaseAuth auth;
     Chat currentChat;
@@ -60,7 +54,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         initDb();
-        api = new HttpApi(Volley.newRequestQueue(this));
+        gateway = new Gateway(this);
 
         main = findViewById(R.id.main);
         messageScroll = findViewById(R.id.message_scroll);
@@ -97,22 +91,12 @@ public class ChatActivity extends AppCompatActivity {
             return;
         }
 
-        String url = "chats/" + currentChat.id + "/messages";
-
-        JSONObject body = new JSONObject();
-        try {
-            body.put("content", content);
-        } catch (JSONException ignored) {
-
-        };
-
-        api.authRequest(url, Request.Method.POST, body,
-                res -> {
-
-                },
+        gateway.sendMessage(currentChat.id, content,
+                res -> {},
                 err -> {
                     Util.showToast(this, err.getMessage());
-                });
+                }
+        );
     }
 
     void clearMessages() {
@@ -123,7 +107,7 @@ public class ChatActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         MessageView view = new MessageView(this, msg, auth.getUid() != null && auth.getUid().equals(msg.authorUid));
-        view.fetchUser(api);
+        view.fetchUser(gateway);
 
         messageList.addView(view);
 
@@ -165,11 +149,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void startChatListLoader() {
-        String uid = auth.getUid();
-
-        DatabaseReference ref = db.child("/users/" + uid + "/chatMembership");
-
-        ref.addValueEventListener(new ValueEventListener() {
+        gateway.createChatListListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 HashMap<String, Boolean> idMap = (HashMap<String, Boolean>) snapshot.getValue();

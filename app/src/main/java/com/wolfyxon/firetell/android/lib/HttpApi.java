@@ -6,6 +6,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -80,6 +81,24 @@ public class HttpApi {
             },
             err -> {}
         );
+    }
+
+    public void sendMessage(
+            String chatId,
+            String content,
+            Response.Listener<JSONObject> onSuccess,
+            Response.ErrorListener onError
+    ) {
+        String url = "chats/" + chatId + "/messages";
+        JSONObject body = new JSONObject();
+
+        try {
+            body.put("content", content);
+        } catch (JSONException ignored) {
+
+        };
+
+        authRequest(url, Request.Method.POST, body, onSuccess, onError);
     }
 
     FirebaseAuth getAuth() {
