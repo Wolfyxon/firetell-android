@@ -89,7 +89,7 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         getSideMenuHeader().findViewById(R.id.logout_btn).setOnClickListener(l -> {
-           Util.showConfirm(this, "Would you like to log out?", res -> {
+           Util.showConfirm(this, R.string.confirm_log_out, res -> {
                if(res) {
                    auth.signOut();
                    Util.changeActivity(this, LoginActivity.class);
@@ -109,7 +109,7 @@ public class ChatActivity extends AppCompatActivity {
 
     void sendMessage() {
         if(currentChat == null) {
-            Util.showToast(this, "No chat selected");
+            Util.showToast(this, R.string.err_no_chat_selected);
             return;
         }
 
@@ -156,14 +156,15 @@ public class ChatActivity extends AppCompatActivity {
                     String name = chat.name;
 
                     if(name == null) {
-                        name = "Unknown chat";
+                        name = getString(R.string.unknown_chat);
                     }
 
                     chatNameLbl.setText(name);
                     currentChat = chat;
                 },
                 err -> {
-                    Util.showToast(this, "Failed to load chat: " + err.getMessage());
+                    String text = ChatActivity.this.getString(R.string.err_load_chat, err.getMessage());
+                    Util.showToast(ChatActivity.this, text);
                 }
         );
 
@@ -181,7 +182,8 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Util.showAlert(ChatActivity.this, "Failed to load messages:\n" + error.getMessage());
+                String err = ChatActivity.this.getString(R.string.err_load_chat, error.getMessage());
+                Util.showAlert(ChatActivity.this, err);
             }
         };
 
@@ -228,7 +230,8 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Util.showAlert(ChatActivity.this, "Failed to load chats:\n" + error.getMessage());
+                String text = ChatActivity.this.getString(R.string.err_load_chats, error.getMessage());
+                Util.showAlert(ChatActivity.this, text);
             }
         });
     }
@@ -242,7 +245,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void addChat(Chat chat) {
-        String name = chat.name != null ? chat.name : "Unknown chat";
+        String name = chat.name != null ? chat.name : getString(R.string.unknown_chat);
 
         getChatListMenu().add(name).setOnMenuItemClickListener(l -> {
             selectChat(chat.id);

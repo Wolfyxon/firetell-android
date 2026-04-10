@@ -1,7 +1,34 @@
 <resources>
+    <!-- Core -->
     <string name="app_name">Firetell</string>
+
+    <!-- General -->
     <string name="log_in">Log in</string>
     <string name="log_in_welcome">Welcome back</string>
     <string name="email_hint">Enter e-mail...</string>
     <string name="password_hint">Enter password...</string>
+    <string name="confirm_log_out">Would you like to log out?</string>
+
+    <!-- Basic actions -->
+    <string name="ok">Ok</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <!-- Base errors -->
+    <string name="err_unknown">Unknown error: %s</string>
+
+    <!-- Login errors -->
+    <string name="err_server_error">"Server has a skill issue (code 500)"</string>
+    <string name="err_connection">Unable to connect. Please check your internet connection</string>
+    <string name="err_session_expired">"Your session expired, please log back in"</string>
+    <string name="err_no_credentials">Please enter your e-mail and password</string>
+    <string name="err_missing_email">E-mail missing</string>
+    <string name="err_missing_password">Password missing</string>
+
+    <!-- Chat errors -->
+    <string name="unknown_chat">Unknown chat</string>
+    <string name="err_no_chat_selected">No chat selected</string>
+    <string name="err_load_messages">Unable to load messages: %s</string>
+    <string name="err_load_chats">Unable to load chats: %s</string>
+    <string name="err_load_chat">Unable to load chat: %s</string>
 </resources>

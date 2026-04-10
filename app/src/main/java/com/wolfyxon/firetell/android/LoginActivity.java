@@ -59,17 +59,17 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: String values
 
         if(emailEmpty && passEmpty) {
-            errorLbl.setText("Please enter your e-mail and password");
+            errorLbl.setText(R.string.err_no_credentials);
             return false;
         }
 
         if(emailEmpty) {
-            errorLbl.setText("E-mail missing");
+            errorLbl.setText(R.string.err_missing_email);
             return false;
         }
 
         if(passEmpty) {
-            errorLbl.setText("Password missing");
+            errorLbl.setText(R.string.err_missing_password);
             return false;
         }
 

@@ -49,24 +49,24 @@ public class MainActivity extends AppCompatActivity {
                 },
                 err -> {
                     if(err.networkResponse == null) {
-                        Util.showAlert(this, "Unable to connect. Please check your internet connection.");
+                        Util.showAlert(this, R.string.err_connection);
                         return;
                     }
 
                     int code = err.networkResponse.statusCode;
 
                     if(code == 500) {
-                        Util.showAlert(this, "Server has a skill issue (code 500)");
+                        Util.showAlert(this, R.string.err_server_error);
                         return;
                     }
 
                     if(code == 401) {
-                        Util.showToast(this, "Your session expired, please log back in");
+                        Util.showToast(this, R.string.err_session_expired);
                         goToLogin();
                         return;
                     }
 
-                    Util.showAlert(this, "Unknown error. Response: " + code);
+                    Util.showAlert(this, getString(R.string.err_unknown, String.valueOf(code)));
                 }
         );
 
