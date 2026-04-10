@@ -30,7 +30,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:textSize="20sp"
-                android:text="Chat name"/>
+                android:text="Chat name"
+                android:id="@+id/chat_name"/>
         </Toolbar>
 
         <ScrollView

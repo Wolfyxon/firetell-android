@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -33,14 +34,17 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ChatActivity extends AppCompatActivity {
     DrawerLayout main;
+    TextView chatNameLbl;
     ScrollView messageScroll;
     LinearLayout messageList;
     NavigationView sideMenu;
     EditText messageInp;
     ImageButton sendBtn;
+
     Gateway gateway;
     DatabaseReference db;
     FirebaseAuth auth;
@@ -121,7 +125,17 @@ public class ChatActivity extends AppCompatActivity {
             currentChatRef.removeEventListener(currentChatListener);
         }
 
-        currentChatRef = db.child("/messages/" + id).orderByChild("timestamp").limitToLast(64).getRef();
+        gateway.fetchChat(id,
+                chat -> {
+                    chatNameLbl.setText(chat.name);
+                },
+                err -> {
+                    Util.showToast(this, "Failed to load chat: " + err.getMessage());
+                }
+        );
+
+        currentChatRef = gateway.getMessagesRef(id);
+
         currentChatListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -149,6 +163,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void startChatListLoader() {
+        AtomicBoolean firstLoad = new AtomicBoolean(true);
+
         gateway.createChatListListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -163,8 +179,18 @@ public class ChatActivity extends AppCompatActivity {
 
                 for(String id : ids) {
                     currentChat = new Chat(id, "nope"); // testing!
-                    selectChat(id);
-                    sideMenu.getMenu().add(id);
+
+                    gateway.fetchChat(id,
+                        chat -> {
+                            addChat(chat);
+
+                            if(firstLoad.get()) {
+                                selectChat(id);
+                                firstLoad.set(false);
+                            }
+                        },
+                        err -> {}
+                    );
                 }
             }
 
@@ -173,6 +199,10 @@ public class ChatActivity extends AppCompatActivity {
                 Util.showAlert(getApplicationContext(), "Failed to load chats:\n" + error.getMessage());
             }
         });
+    }
+
+    void addChat(Chat chat) {
+        sideMenu.getMenu().findItem(R.id.chats).getSubMenu().add(chat.name);
     }
 
     void openSideMenu() {
