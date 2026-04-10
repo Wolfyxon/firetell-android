@@ -8,9 +8,14 @@
     <string name="email_hint">Enter e-mail...</string>
     <string name="password_hint">Enter password...</string>
     <string name="confirm_log_out">Would you like to log out?</string>
+    <string name="chats">Chats</string>
+    <string name="message_input_hint">Type your message...</string>
+    <string name="open_menu">Open menu</string>
+    <string name="send">Send message</string>
+    <string name="log_out">Log out</string>
 
     <!-- Basic actions -->
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 

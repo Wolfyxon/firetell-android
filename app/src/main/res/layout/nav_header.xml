@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="40dp"
-    android:layout_marginLeft="10dp">
+    android:layout_marginStart="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,6 +24,7 @@
             android:layout_gravity="center"
             android:src="@drawable/logout"
             android:background="@color/transparent"
+            android:contentDescription="@string/log_out"
             android:id="@+id/logout_btn"/>
     </LinearLayout>
 

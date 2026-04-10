@@ -5,7 +5,8 @@
     tools:showIn="navigation_view">
 
     <item
-        android:id="@+id/chats">
+        android:id="@+id/chats"
+        android:title="@string/chats">
 
         <menu>
 
