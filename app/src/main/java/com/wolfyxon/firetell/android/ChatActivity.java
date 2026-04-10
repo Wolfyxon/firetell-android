@@ -222,6 +222,7 @@ public class ChatActivity extends AppCompatActivity {
 
         getChatListMenu().add(name).setOnMenuItemClickListener(l -> {
             selectChat(chat.id);
+            main.close();
             return true;
         });
     }
