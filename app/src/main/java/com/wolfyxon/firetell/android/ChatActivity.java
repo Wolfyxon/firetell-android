@@ -59,12 +59,6 @@ public class ChatActivity extends AppCompatActivity {
         initDb();
         initSideMenu();
 
-        FirebaseUser user = auth.getCurrentUser();
-        String displayName = user.getDisplayName();
-
-        TextView usernameLbl = sideMenu.getHeaderView(0).findViewById(R.id.username);
-        usernameLbl.setText(displayName != null ? displayName : user.getUid());
-
         sendBtn.setOnClickListener(l -> {
             sendMessage();
         });
@@ -81,8 +75,22 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void initSideMenu() {
+        FirebaseUser user = auth.getCurrentUser();
+
+        if(user != null) {
+            String displayName = user.getDisplayName();
+
+            TextView usernameLbl = getSideMenuHeader().findViewById(R.id.username);
+            usernameLbl.setText(displayName != null ? displayName : user.getUid());
+        }
+
         findViewById(R.id.menu_btn).setOnClickListener(l -> {
             openSideMenu();
+        });
+
+        getSideMenuHeader().findViewById(R.id.logout_btn).setOnClickListener(l -> {
+            auth.signOut();
+            Util.changeActivity(this, LoginActivity.class);
         });
 
         OnBackPressedCallback backCallback = new OnBackPressedCallback(true) {
@@ -223,6 +231,10 @@ public class ChatActivity extends AppCompatActivity {
 
     SubMenu getChatListMenu() {
         return sideMenu.getMenu().findItem(R.id.chats).getSubMenu();
+    }
+
+    View getSideMenuHeader() {
+        return sideMenu.getHeaderView(0);
     }
 
     void addChat(Chat chat) {
